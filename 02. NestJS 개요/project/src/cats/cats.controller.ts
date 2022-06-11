@@ -9,20 +9,24 @@ import {
   Post,
   Put,
   UseFilters,
+  UseInterceptors,
 } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { PositiveIntPipe } from 'src/common/pipes/positiveInt.pipe';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
+
 import { CatsService } from './cats.service';
 
 @Controller('cats')
+@UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter) // 각각의 Router에서 설정한 오류 filter
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Get()
   getAllCat() {
-    throw new HttpException('api broken', 401);
-    return 'all cat';
+    console.log('hello controller');
+    return { cats: 'all cat api' };
   }
 
   @Get(':id')
