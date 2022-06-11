@@ -9,9 +9,10 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(
-      'mongodb+srv://kshlove735:Kkjj159159!!@nestcluster.y3trole.mongodb.net/test',
-    ),
+    MongooseModule.forRoot(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }),
     CatsModule,
   ],
   controllers: [AppController],
