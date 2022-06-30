@@ -36,6 +36,7 @@ export class ChatsGateway
     this.logger.log('init');
   }
 
+  // 유저가 등장 했을때 유저 등록 및 다른 유저에게 broadcasting
   @SubscribeMessage('new_user')
   handleNewUser(
     @MessageBody() username: string, // client한테 받은 메시지
@@ -44,5 +45,15 @@ export class ChatsGateway
     // broadcast : 연결된 모든 소켓들에게 데이터 전송
     socket.broadcast.emit('user_connected', username); // emit('이벤트 이름', 보내는 데이터);
     return username;
+  }
+
+  // 채팅 메시지 broadcasting
+  @SubscribeMessage('submit_chat')
+  handleSubmitChat(
+    @MessageBody() chat: string,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    // broadcast : 연결된 모든 소켓들에게 데이터 전송
+    socket.broadcast.emit('new_chat', { chat, username: socket.id }); // emit('이벤트 이름', 보내는 데이터);
   }
 }
