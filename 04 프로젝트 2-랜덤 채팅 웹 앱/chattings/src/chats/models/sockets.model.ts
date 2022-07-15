@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory, SchemaOptions } from "@nestjs/mongoose";
-import { IsNotEmpty, isString, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
+import { Document } from "mongoose";
 
 const option: SchemaOptions = {
     id: false,
@@ -23,7 +24,6 @@ export class Socket extends Document {
     @IsNotEmpty()
     @IsString()
     username: string;
-
 }
 
 export const SocketSchema = SchemaFactory.createForClass(Socket);
